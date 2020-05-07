@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 			get 'fetch',to: 'levels#get_user_data'
 			post 'change',to: 'levels#change'
 			get 'login', to: 'login#login'
+			get 'ping', to: 'health#ping'
 		end
 	end
 end

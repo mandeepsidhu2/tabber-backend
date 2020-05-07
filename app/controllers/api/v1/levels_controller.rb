@@ -1,6 +1,28 @@
 require 'json'
 class Api::V1::LevelsController < ApplicationController
+	def cnt(arr)
+		total=0
+		arr.each do |var|
+			var=JSON.parse(var)
+			total+=var[0]["completed"]
+		end
+		return total
+	end
 	before_action :set_api_current_user
+	def get_all_data
+		@users=User.all
+		@newArr=[]
+		@users.each_with_index do |user,index|
+			var=user
+			user=user.attributes
+			user['totalEasy']=cnt(var.easy)
+			user['totalMedium']=cnt(var.medium)
+			user['totalDifficult']=cnt(var.difficult)
+			@newArr.push(user.except("created_at","updated_at","id","email"))
+		end
+		puts(@users)
+		render json: @newArr, status: 200
+	end
 	def change
 		
 		@user=User.find_by email: @api_current_user.email 

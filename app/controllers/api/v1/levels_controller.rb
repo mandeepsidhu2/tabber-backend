@@ -27,9 +27,11 @@ class Api::V1::LevelsController < ApplicationController
 		
 		@user=User.find_by email: @api_current_user.email 
 		data=JSON.parse(request.body.read)
+		logger.debug "Data to be updated_at to:#{data},on #{Date.today.to_s}"
 		level=data["level"]
 		completed=data["completed"]
 		data=@user[level]
+		logger.debug "Previous data for the level:#{level} is #{data}"
 		data.each_with_index do |item,index|
     		var=JSON.parse(item)
     		@index=index
@@ -53,8 +55,9 @@ class Api::V1::LevelsController < ApplicationController
 
 	def get_user_data
 		@user=User.find_by email: @api_current_user.email 
-		logger.debug "Rendering for user :#{@user.email}"
+		logger.debug "Rendering for user :#{@user.email},on #{Date.today.to_s}"
 		data=@user.easy
+		logger.debug "Previous data for easy level:#{data}"
 		@varEasy=nil
 		@varMedium=nil
 		@varDifficult=nil

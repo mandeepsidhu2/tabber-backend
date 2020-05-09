@@ -32,12 +32,11 @@ class Api::V1::LevelsController < ApplicationController
 		data=@user[level]
 		puts(data)
 		data.each_with_index do |item,index|
+
+			puts(item)
     		var=JSON.parse(item)
     		@index=index
     		if(var[0]["time"].eql?(Date.today.to_s))
-    			puts("*****************")
-    			puts(index)
-    			
     			data.delete_at(index)
     			var = [{
 		  			completed: completed,
@@ -46,7 +45,7 @@ class Api::V1::LevelsController < ApplicationController
 			@user[level] << var
 			@user.save
 			puts(@user[level])
-			puts("*****************")
+			
 			break
     		end
 		end
@@ -56,8 +55,6 @@ class Api::V1::LevelsController < ApplicationController
 
 	def get_user_data
 		@user=User.find_by email: @api_current_user.email 
-		
-		#data=JSON.parse(@user.easy);
 		data=@user.easy
 		@varEasy=nil
 		@varMedium=nil
@@ -72,6 +69,7 @@ class Api::V1::LevelsController < ApplicationController
     			@varEasy=nil
     		end
 		end
+
 		if @varEasy==nil
 			@varEasy = [{
 		  	completed: 0,
@@ -81,17 +79,16 @@ class Api::V1::LevelsController < ApplicationController
 			@user.medium << @varEasy
 			@user.difficult << @varEasy
 			@user.save
+			@index=@user.easy.size-1
 			@varEasy=JSON.parse(@varEasy)
 		end
-			
+	
 			@varEasy=@varEasy[0]["completed"]
 			@varMedium=JSON.parse(@user.medium[@index])
 			@varMedium=@varMedium[0]["completed"]
 			@varDifficult=JSON.parse(@user.difficult[@index])
 			@varDifficult=@varDifficult[0]["completed"]
-			
-		
-		
+
 		render 'levels/userdata.json.jbuilder', status: 200
 
 	end

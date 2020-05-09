@@ -3,7 +3,7 @@ module Api
 		class LoginController < ApplicationController
 			before_action :set_api_current_user,only: [:logout]
 			def login
-				puts("Step ****1")
+				puts("Step *****1")
 				validator = GoogleIDToken::Validator.new
 				@id_token = request.headers["token"]
 				required_audience=JWT.decode(@id_token, nil, false)[0]['aud']

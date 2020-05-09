@@ -18,7 +18,7 @@ class Api::V1::LevelsController < ApplicationController
 			user['totalEasy']=cnt(var.easy)
 			user['totalMedium']=cnt(var.medium)
 			user['totalDifficult']=cnt(var.difficult)
-			@newArr.push(user.except("created_at","updated_at","id","email"))
+			@newArr.push(user.except("created_at","updated_at","id"))
 		end
 		puts(@users)
 		render json: @newArr, status: 200

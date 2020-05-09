@@ -2,7 +2,6 @@ require 'json_web_token'
 class ApplicationController < ActionController::API
 	  include ActionController::HttpAuthentication::Token::ControllerMethods
 
-
 	def set_api_current_user
 		header=request.headers["token"]
 		 puts("token is ",header)

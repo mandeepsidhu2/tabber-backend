@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
 	  include ActionController::HttpAuthentication::Token::ControllerMethods
 
 	def set_api_current_user
+		@date=Date.today.in_time_zone('Kolkata').strftime("%Y-%m-%d").to_s;
 		header=request.headers["token"]
 		 puts("token is ",header)
 		begin

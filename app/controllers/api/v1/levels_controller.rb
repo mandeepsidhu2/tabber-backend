@@ -27,7 +27,7 @@ class Api::V1::LevelsController < ApplicationController
 		
 		@user=User.find_by email: @api_current_user.email 
 		data=JSON.parse(request.body.read)
-		logger.debug "Data to be updated_at to:#{data},on #{Date.today.to_s}"
+		logger.debug "Data to be updated_at to:#{data},on #{@date}"
 		level=data["level"]
 		completed=data["completed"]
 		data=@user[level]
@@ -35,12 +35,12 @@ class Api::V1::LevelsController < ApplicationController
 		data.each_with_index do |item,index|
     		var=JSON.parse(item)
     		@index=index
-    		if(var[0]["time"].eql?(Date.today.to_s))
-    		logger.debug "Updating for level #{level},on #{Date.today.to_s},completed:#{completed}"
+    		if(var[0]["time"].eql?(@date))
+    		logger.debug "Updating for level #{level},on #{@date},completed:#{completed}"
     			data.delete_at(index)
     			var = [{
 		  			completed: completed,
-		 	 		time: Date.today
+		 	 		time: @date
 				}].to_json
 			@user[level] << var
 			@user.save
@@ -55,7 +55,7 @@ class Api::V1::LevelsController < ApplicationController
 
 	def get_user_data
 		@user=User.find_by email: @api_current_user.email 
-		logger.debug "Rendering for user :#{@user.email},on #{Date.today.to_s}"
+		logger.debug "Rendering for user :#{@user.email},on #{@date}"
 		data=@user.easy
 		logger.debug "Previous data for easy level:#{data}"
 		@varEasy=nil
@@ -65,7 +65,7 @@ class Api::V1::LevelsController < ApplicationController
 		data.each_with_index do |item,index|
     		@varEasy=JSON.parse(item)
     		@index=index
-    		if(@varEasy[0]["time"].eql?(Date.today.to_s))
+    		if(@varEasy[0]["time"].eql?(@date))
     			break
     		else
     			@varEasy=nil

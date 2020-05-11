@@ -4,8 +4,10 @@ class Api::V1::SongsController < ApplicationController
 		render json: @songs.except("created_at","updated_at","id"),status: 200
 	end
 	def add_song
-		@name=params[:name]
-		@link=params[:link]
+		data=JSON.parse(request.body.read)
+		puts(data)
+		@name=data["name"]
+		@link=data["link"]
 		@song=Song.create(name:@name,link:@link)
 		render json:@song,status: 200
 	end

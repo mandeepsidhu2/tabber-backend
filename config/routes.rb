@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :api do
 		namespace :v1 do
 			get 'songs', to: 'songs#get_all'
+			get 'add_song', to: 'songs#add_song'
+			get 'delete_song',to: 'songs#delete_song'
 			get 'all', to: 'levels#get_all_data'
 			get 'fetch',to: 'levels#get_user_data'
 			post 'change',to: 'levels#change'

@@ -15,7 +15,7 @@ class Api::V1::LevelsController < ApplicationController
 	def filter_all
 		puts(request.body.read)
 		@tableData=JSON.parse(request.body.read)
-		emailInitials=@tableData["emailInitials"].downcase
+		initials=@tableData["emailInitials"].downcase
 		tablePageIndex=@tableData["pageIndex"]
 		tablePageSize=@tableData["pageSize"]
 		@users=User.all
@@ -30,10 +30,12 @@ class Api::V1::LevelsController < ApplicationController
 		end
 		
 		@ans=[]
-
 		@newArr.each do |user| 
-		 	   @ans << user if user['email'].include?emailInitials;
+			@ans << user if user['email'].include?initials;
+		 	@ans << user if user['name'].downcase.include?initials;
 		end
+
+		@ans=@ans.uniq
 		@ans=@ans.slice(tablePageSize*tablePageIndex,tablePageSize)
 		logger.debug "Rendering data for dashboard table:#{@ans}"
 		render json:@ans,status: 200

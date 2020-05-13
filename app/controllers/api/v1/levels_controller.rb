@@ -94,7 +94,7 @@ class Api::V1::LevelsController < ApplicationController
 		if @varEasy==nil
 			@varEasy = [{
 		  	completed: 0,
-		 	 time: @date.today
+		 	 time: @date
 			}].to_json
 			@user.easy << @varEasy
 			@user.medium << @varEasy

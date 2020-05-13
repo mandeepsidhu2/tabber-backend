@@ -30,7 +30,7 @@ class Api::V1::LevelsController < ApplicationController
 		
 		@ans=[]
 		@newArr.each do |user| 
-			@ans << user if user['email'].include?initials;
+			@ans << user if user['email'].split('@').first.include?initials;
 		 	@ans << user if user['name'].downcase.include?initials;
 		end
 

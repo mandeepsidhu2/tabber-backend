@@ -9,7 +9,13 @@ class Api::V1::LevelsController < ApplicationController
 		return total
 	end
 	before_action :set_api_current_user
+	def size
+		render json: User.all.size,status: 200
+	end
 	def get_all_data
+		@tableData=JSON.parse(request.body.read)
+		tablePageIndex=@tableData["pageIndex"]
+		tablePageSize=@tableData["pageSize"]
 		@users=User.all
 		@newArr=[]
 		@users.each_with_index do |user,index|
@@ -20,6 +26,7 @@ class Api::V1::LevelsController < ApplicationController
 			user['totalDifficult']=cnt(var.difficult)
 			@newArr.push(user.except("created_at","updated_at","id"))
 		end
+		@newArr=@newArr.slice(tablePageSize*tablePageIndex,tablePageSize)
 		logger.debug "Rendering data for dashboard table:#{@newArr}"
 		render json: @newArr, status: 200
 	end

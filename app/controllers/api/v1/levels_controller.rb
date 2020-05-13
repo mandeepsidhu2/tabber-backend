@@ -1,5 +1,6 @@
 require 'json'
 class Api::V1::LevelsController < ApplicationController
+
 	def cnt(arr)
 		total=0
 		arr.each do |var|
@@ -9,9 +10,7 @@ class Api::V1::LevelsController < ApplicationController
 		return total
 	end
 	before_action :set_api_current_user
-	def size
-		render json: User.all.size,status: 200
-	end
+	
 	def filter_all
 		puts(request.body.read)
 		@tableData=JSON.parse(request.body.read)
@@ -36,29 +35,13 @@ class Api::V1::LevelsController < ApplicationController
 		end
 
 		@ans=@ans.uniq
+		size=@ans.size
 		@ans=@ans.slice(tablePageSize*tablePageIndex,tablePageSize)
+		@ans << size
 		logger.debug "Rendering data for dashboard table:#{@ans}"
 		render json:@ans,status: 200
 	end
 
-	def get_all_data
-		@tableData=JSON.parse(request.body.read)
-		tablePageIndex=@tableData["pageIndex"]
-		tablePageSize=@tableData["pageSize"]
-		@users=User.all
-		@newArr=[]
-		@users.each_with_index do |user,index|
-			var=user
-			user=user.attributes
-			user['totalEasy']=cnt(var.easy)
-			user['totalMedium']=cnt(var.medium)
-			user['totalDifficult']=cnt(var.difficult)
-			@newArr.push(user.except("created_at","updated_at","id"))
-		end
-		@newArr=@newArr.slice(tablePageSize*tablePageIndex,tablePageSize)
-		logger.debug "Rendering data for dashboard table:#{@newArr}"
-		render json: @newArr, status: 200
-	end
 	def change
 		
 		@user=User.find_by email: @api_current_user.email 

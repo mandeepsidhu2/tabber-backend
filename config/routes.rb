@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
 		namespace :v1 do
+			post 'filter_all',to: 'levels#filter_all'
 			get 'songs', to: 'songs#get_all'
 			post 'add_song', to: 'songs#add_song'
 			get 'delete_song',to: 'songs#delete_song'

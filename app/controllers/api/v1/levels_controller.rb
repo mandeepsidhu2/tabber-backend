@@ -12,6 +12,33 @@ class Api::V1::LevelsController < ApplicationController
 	def size
 		render json: User.all.size,status: 200
 	end
+	def filter_all
+		puts(request.body.read)
+		@tableData=JSON.parse(request.body.read)
+		emailInitials=@tableData["emailInitials"].downcase
+		tablePageIndex=@tableData["pageIndex"]
+		tablePageSize=@tableData["pageSize"]
+		@users=User.all
+		@newArr=[]
+		@users.each_with_index do |user,index|
+			var=user
+			user=user.attributes
+			user['totalEasy']=cnt(var.easy)
+			user['totalMedium']=cnt(var.medium)
+			user['totalDifficult']=cnt(var.difficult)
+			@newArr.push(user.except("created_at","updated_at","id"))
+		end
+		
+		@ans=[]
+
+		@newArr.each do |user| 
+		 	   @ans << user if user['email'].include?emailInitials;
+		end
+		@ans=@ans.slice(tablePageSize*tablePageIndex,tablePageSize)
+		logger.debug "Rendering data for dashboard table:#{@ans}"
+		render json:@ans,status: 200
+	end
+
 	def get_all_data
 		@tableData=JSON.parse(request.body.read)
 		tablePageIndex=@tableData["pageIndex"]

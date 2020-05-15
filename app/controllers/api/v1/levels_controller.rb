@@ -1,5 +1,6 @@
 require 'json'
 class Api::V1::LevelsController < ApplicationController
+	before_action :set_api_current_user, except: :filter_all
 
 	def cnt(arr)
 		total=0
@@ -9,7 +10,7 @@ class Api::V1::LevelsController < ApplicationController
 		end
 		return total
 	end
-	before_action :set_api_current_user
+	
 	
 	def filter_all
 		puts(request.body.read)

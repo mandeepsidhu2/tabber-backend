@@ -1,8 +1,12 @@
 class Api::V1::ChatController < ApplicationController
+	before_action :set_api_current_user, except: :get_all
+	
 	def get_all
 		@chats=Chat.all
 		render json: @chats,status: 200
 	end
+
+
 	def add
 		@chats=Chat.all
 		#reduce the size of the chat database

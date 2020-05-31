@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 			post 'change',to: 'levels#change'
 			get 'login', to: 'login#login'
 			get 'ping', to: 'health#ping'
+			get 'remove_user', to: 'user#delete_user'
 		end
 	end
 end

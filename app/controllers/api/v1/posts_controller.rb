@@ -14,17 +14,23 @@ class Api::V1::PostsController < ApplicationController
 		@posts.each_with_index do |post|
 			tempPost=Object.new
 			class << tempPost
+				attr_accessor :id
 				attr_accessor :title
 				attr_accessor :content 
 				attr_accessor :username 
 				attr_accessor :picture_url
 				attr_accessor :email
+				attr_accessor :likes
+				attr_accessor :is_liked
 			end
 			tempUser= User.find(post.user_id)
+			tempPost.id=post.id
 			tempPost.title=post.title
 			tempPost.content=post.content
 			tempPost.username=tempUser.name
 			tempPost.picture_url=tempUser.photo_url
+			tempPost.likes=post.likes.size
+			tempPost.is_liked=Like.where(post_id:post.id,user_id:@api_current_user.id).present?
 			@posts_collect.push(tempPost)
 		end
 		render json:@posts_collect,status: 200

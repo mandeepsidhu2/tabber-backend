@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 			get 'remove_user', to: 'user#delete_user'
 			get 'delete_post', to: 'posts#delete'
 			get 'posts',to: 'posts#get'
+			get 'like_unlike',to: 'like#like_unlike'
 		end
 	end
 end

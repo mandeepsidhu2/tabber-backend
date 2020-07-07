@@ -16,12 +16,14 @@ module Api
 		 			report "Cannot validate: #{e}"
 				end
 				puts("Step ******5")
+				puts(payload)
 				@user = User.find_by(email: payload['email'])
 				if @user.blank?
 					puts("Step ******6")
 					@user = User.create(
 							email: payload['email'],
 							name:payload['name'],
+							photo_url:payload['picture']
 							# confirmed_at: Time.now
 						)
 				end

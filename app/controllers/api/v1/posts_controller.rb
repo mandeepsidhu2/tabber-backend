@@ -10,7 +10,24 @@ class Api::V1::PostsController < ApplicationController
 	end
 	def get
 		@posts=Post.all
-		render json:@posts,status: 200
+		@posts_collect= Array.new
+		@posts.each_with_index do |post|
+			tempPost=Object.new
+			class << tempPost
+				attr_accessor :title
+				attr_accessor :content 
+				attr_accessor :username 
+				attr_accessor :picture_url
+				attr_accessor :email
+			end
+			tempUser= User.find(post.user_id)
+			tempPost.title=post.title
+			tempPost.content=post.content
+			tempPost.username=tempUser.name
+			tempPost.picture_url=tempUser.photo_url
+			@posts_collect.push(tempPost)
+		end
+		render json:@posts_collect,status: 200
 	end
 	def delete
 		@post=Post.find(params[:post_id])

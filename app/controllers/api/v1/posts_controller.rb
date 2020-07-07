@@ -8,6 +8,10 @@ class Api::V1::PostsController < ApplicationController
 		@post=Post.create(title:title,content:content,user_id:@api_current_user.id)
 		render json:@post,status: 200
 	end
+	def get
+		@posts=Post.all
+		render json:@posts,status: 200
+	end
 	def delete
 		@post=Post.find(params[:post_id])
 		if @post.user_id == @api_current_user.id

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 			get 'ping', to: 'health#ping'
 			get 'remove_user', to: 'user#delete_user'
 			get 'delete_post', to: 'posts#delete'
+			get 'posts',to: 'posts#get'
 		end
 	end
 end
